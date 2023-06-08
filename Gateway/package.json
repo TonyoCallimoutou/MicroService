@@ -4,7 +4,7 @@
   "description": "",
   "main": "gateway-service.js",
   "scripts": {
-    "start-books": "node gateway-service.js"
+    "start-gateway": "node gateway-service.js"
   },
   "author": "",
   "license": "ISC",

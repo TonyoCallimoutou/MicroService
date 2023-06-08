@@ -1,0 +1,66 @@
+version : "1"
+
+networks:
+  my_network:
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./books.sql:/docker-entrypoint-initdb.d/books.sql
+    ports:
+      - ${MYSQL_PORT}:3306
+    expose:
+      - ${MYSQL_PORT}
+    networks:
+      - my_network
+
+  books:
+    build:
+      context: ./books
+    ports:
+      - 3000:3000
+    command: npm run start-books
+    depends_on:
+      - db
+    networks:
+      - my_network
+
+  authors:
+    build:
+      context: ./authors
+    ports:
+      - 4000:4000
+    command: npm run start-authors
+    depends_on:
+      - db
+    networks:
+      - my_network
+
+  categories:
+    build:
+      context: ./categories
+    ports:
+      - 5000:5000
+    command: npm run start-categories
+    depends_on:
+      - db
+    networks:
+      - my_network
+
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - 2000:2000
+    command: npm run start-gateway
+    depends_on:
+      - db
+    networks:
+      - my_network
