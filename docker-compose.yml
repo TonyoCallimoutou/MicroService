@@ -15,9 +15,7 @@ services:
     volumes:
       - ./books.sql:/docker-entrypoint-initdb.d/books.sql
     ports:
-      - ${MYSQL_PORT}:3306
-    expose:
-      - ${MYSQL_PORT}
+      - 3300:3306
     networks:
       - my_network
 
