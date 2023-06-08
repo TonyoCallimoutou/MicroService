@@ -1,7 +1,7 @@
 class Request {
   static sqlCreateBook(data) {
       return `INSERT INTO Books (title, authorId, categoryId)
-              Values (${data.title}, ${data.authorId}, ${data.categoryId})`
+              Values ("${data.title}", ${data.authorId}, ${data.categoryId})`
   }
 
   static sqlGetAllBooks() {

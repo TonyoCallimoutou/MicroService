@@ -1,31 +1,28 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const controlers = require('./controlers/authors.controlers.js');
 
 const app = express();
 app.use(bodyParser.json());
 
-let authors = [
-  {id: 1, name: "auteur 1"},
-  {id: 2, name: "auteur 2"},
-  {id: 3, name: "auteur 3"},
-  {id: 4, name: "auteur 4"},
-  {id: 5, name: "auteur 5"},
-];
+app.post('/authors', async (req,res) => {
+  controlers.createAuthor(req,res)
+});
 
 app.get('/authors', async (req,res) => {
-  res.json(authors)
+controlers.getAll(req,res)
 });
 
 app.get('/authors/:id', async (req,res) => {
-  const id = parseInt(req.params.id);
-  const author = authors.find(author => author.id === id);
+  controlers.getAuthorById(req,res)
+});
 
-  if (author) {
-    res.json(author);
-  }
-  else {
-    res.status(404).json({error: "Livre non trouvé"});
-  }
+app.put('/authors/update', async (req,res) => {
+  controlers.updateName(req,res)
+});
+
+app.delete('/authors/:id', async (req,res) => {
+  controlers.deleteAuthor(req,res)
 });
 
 app.listen(4000, () => {
