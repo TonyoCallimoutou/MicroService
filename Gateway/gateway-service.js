@@ -35,10 +35,9 @@ app.delete('/authors/:id', async (req,res) => {
   try {
     const id = parseInt(req.params.id);
 
-    const authorRepsponse = await axios.delete(`http://authors:4000/${id}`);
     const bookRepsponse = await axios.put(`http://books:3000/delete-authors/${id}`);
 
-    res.send(authorRepsponse.data && bookRepsponse.data);
+    res.send(bookRepsponse.data);
   }
   catch (error) {
     res.status(500).json({error: "Erreur lors de la suppression de l'autheur"})
