@@ -76,6 +76,19 @@ function updateTitle (req,res) {
   });
 }
 
+function deleteAuthors (req,res) {
+
+  id = req.params.id
+
+  sql.query(request.sqlDeleteAuthors(id), (err, result) => {
+      if (err) {
+        console.log("error: ", err);
+        res.status(500).send({error:"Erreur lors de la modification de l'auteur du livre"});
+      }
+      res.send(true);
+  });
+}
+
 function deleteBooks (req,res) {
 
   id = req.params.id
@@ -94,5 +107,6 @@ module.exports = {
   getAll,
   getBookById,
   updateTitle,
+  deleteAuthors,
   deleteBooks
 }

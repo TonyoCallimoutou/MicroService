@@ -21,6 +21,12 @@ class Request {
               WHERE id = ${data.id}`
   }
 
+  static sqlDeleteAuthors(id) {
+    return `UPDATE Books
+            SET authorId = null
+            WHERE authorId = ${id}`
+}
+
   static sqlDeleteBook(id) {
       return `DELETE
               FROM Books

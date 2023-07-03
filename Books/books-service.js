@@ -5,23 +5,27 @@ const controlers = require('./controlers/books.controlers.js');
 const app = express();
 app.use(bodyParser.json());
 
-app.post('/books', async (req,res) => {
+app.post('/', async (req,res) => {
   controlers.createBooks(req,res)
 });
 
-app.get('/books', async (req,res) => {
+app.get('/', async (req,res) => {
   controlers.getAll(req,res)
 });
 
-app.get('/books/:id', async (req,res) => {
+app.get('/:id', async (req,res) => {
   controlers.getBookById(req,res)
 });
 
-app.put('/books/update', async (req,res) => {
+app.put('/update', async (req,res) => {
   controlers.updateTitle(req,res)
 });
 
-app.delete('/books/:id', async (req,res) => {
+app.put('/delete-authors/:id', async (req, res) => {
+  controlers.deleteAuthors(req,res)
+})
+
+app.delete('/:id', async (req,res) => {
   controlers.deleteBooks(req,res)
 });
 
