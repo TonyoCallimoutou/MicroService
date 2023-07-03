@@ -4,13 +4,13 @@ networks:
   my_network:
 
 services:
-  db:
+  db_books:
     image: mysql:8.0
-    container_name: db
+    container_name: db_books
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_BOOKS}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./books.sql:/docker-entrypoint-initdb.d/books.sql
@@ -19,46 +19,82 @@ services:
     networks:
       - my_network
 
+  db_authors:
+    image: mysql:8.0
+    container_name: db_authors
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_AUTHORS}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./authors.sql:/docker-entrypoint-initdb.d/authors.sql
+    ports:
+      - 3301:3306
+    networks:
+      - my_network
+
+  db_categories:
+    image: mysql:8.0
+    container_name: db_categories
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_CATEGORIES}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./categories.sql:/docker-entrypoint-initdb.d/categories.sql
+    ports:
+      - 3302:3306
+    networks:
+      - my_network
+
   books:
     build:
       context: ./books
+    container_name: books
     ports:
       - 3000:3000
     command: npm run start-books
     depends_on:
-      - db
+      - db_books
     networks:
       - my_network
 
   authors:
     build:
       context: ./authors
+    container_name: authors
     ports:
       - 4000:4000
     command: npm run start-authors
     depends_on:
-      - db
+      - db_authors
     networks:
       - my_network
 
   categories:
     build:
       context: ./categories
+    container_name: categories
     ports:
       - 5000:5000
     command: npm run start-categories
     depends_on:
-      - db
+      - db_categories
     networks:
       - my_network
 
   gateway:
     build:
       context: ./gateway
+    container_name: gateway
     ports:
       - 2000:2000
     command: npm run start-gateway
     depends_on:
-      - db
+      - db_categories
+      - db_authors
+      - db_books
     networks:
       - my_network

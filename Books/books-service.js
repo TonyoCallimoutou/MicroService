@@ -10,7 +10,7 @@ app.post('/books', async (req,res) => {
 });
 
 app.get('/books', async (req,res) => {
-controlers.getAll(req,res)
+  controlers.getAll(req,res)
 });
 
 app.get('/books/:id', async (req,res) => {
